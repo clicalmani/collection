@@ -1,5 +1,5 @@
 <?php
-namespace Clicalmani\Flesco\Collection;
+namespace Clicalmani\Collection;
 
 /**
  * |--------------------------------------------------------------

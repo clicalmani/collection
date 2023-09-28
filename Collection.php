@@ -1,5 +1,5 @@
 <?php
-namespace Clicalmani\Flesco\Collection;
+namespace Clicalmani\Collection;
 
 /**
  * |------------------------------------------------------------------
@@ -14,9 +14,9 @@ class Collection extends SPLCollection
      * Adds new element to the collection
      * 
      * @param mixed $element Element to be added
-     * @return \Clicalmani\Flesco\Collection\Collection for chaining purpose.
+     * @return static
      */
-    function add($element) : \Clicalmani\Flesco\Collection\Collection
+    function add($element) : static
     {
         $this->append($element);
 
@@ -28,7 +28,7 @@ class Collection extends SPLCollection
      * 
      * @param mixed $index Element index (integer), null means not specified
      * @return mixed The element at the specified index if found, otherwise 
-     *      \Clicalmani\Flesco\Collection\Collection is returned for chaining purpose.
+     *      static is returned for chaining purpose.
      */
     function get(mixed $index = null) : mixed
     {
@@ -64,9 +64,9 @@ class Collection extends SPLCollection
      * passed as first argument.The current collection is immediately mutated.
      * 
      * @param \Closure $closure Callback function passed by argument
-     * @return \Clicalmani\Flesco\Collection for chaining purpose.
+     * @return static
      */
-    function map(\Closure $closure) : \Clicalmani\Flesco\Collection\Collection
+    function map(\Closure $closure) : static
     {
         foreach ($this as $key => $value) {
             $this[$key] = $closure($value, $key);
@@ -82,9 +82,9 @@ class Collection extends SPLCollection
      *      it takes into account two arguments:
      *      - the first argument is the elment value
      *      - the second argument is the element index
-     * @return Clicalmani\Flesco\Collection\Collection for chaining purpose.
+     * @return static for chaining purpose.
      */
-    function each(\Closure $closure) : \Clicalmani\Flesco\Collection\Collection
+    function each(\Closure $closure) : static
     {
         foreach ($this as $key => $value) {
             $closure($value, $key);
@@ -98,9 +98,9 @@ class Collection extends SPLCollection
      * elements that pass the test implementated by the provided callback function.
      * 
      * @param \Closure $closure Callback function
-     * @return \Clicalmani\Flesco\Collection\Collection for chaining purpose.
+     * @return static for chaining purpose.
      */
-    function filter(\Closure $closure) : \Clicalmani\Flesco\Collection\Collection
+    function filter(\Closure $closure) : static
     {
         $new = [];
         foreach ($this as $key => $value)
@@ -119,9 +119,9 @@ class Collection extends SPLCollection
      * Merges the provided element(s) into the collection by appending them to the end of the collection.
      * 
      * @param mixed $value A single element or an array of elements
-     * @return \Clicalmani\Flesco\Collection\Collection fro chaining purpose.
+     * @return static fro chaining purpose.
      */
-    function merge(mixed $value) : \Clicalmani\Flesco\Collection\Collection
+    function merge(mixed $value) : static
     {
         if ( !is_array($value) ) $value = [$value];
 
@@ -167,9 +167,9 @@ class Collection extends SPLCollection
      * Exchange the collection elements with specified elements in an array passed by argument
      * 
      * @param array $array new collection elements array
-     * @return \Clicalmani\Flesco\Collection\Collection
+     * @return static
      */
-    function exchange(array $array) : \Clicalmani\Flesco\Collection\Collection
+    function exchange(array $array) : static
     {
         $this->exchangeArray($array);
         return $this;
@@ -181,9 +181,9 @@ class Collection extends SPLCollection
      * 
      * @param mixed $closure [optional] an optional callback function to be executed on each element of the collection. It implements
      *      the uniqueness of the element and return the value to be test.
-     * @return \Clicalmani\Flesco\Collection\Collection
+     * @return static
      */
-    function unique(mixed $closure = null) : \Clicalmani\Flesco\Collection\Collection
+    function unique(mixed $closure = null) : static
     {
         if (!isset($closure)) return $this->exchange(array_unique( $this->toArray() ));
 
@@ -205,7 +205,7 @@ class Collection extends SPLCollection
      * Sort the collection by values using a user-defined comparison function and maintain the index association.
      * 
      * @param \Closure $closure a comparison function
-     * @return \Clicalmani\Flesco\Collection\Collection
+     * @return static
      */
     function sort($closure)
     {
@@ -231,7 +231,7 @@ class Collection extends SPLCollection
     /**
      * Convert the current collection to array object
      * 
-     * @return \Clicalmani\Flesco\Collection\Collection
+     * @return static
      */
     function toObject()
     {
