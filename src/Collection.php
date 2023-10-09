@@ -8,8 +8,12 @@ namespace Clicalmani\Collection;
  * 
  * Collection Objects are traversable, countable and can be converted to JSON.
  */
-class Collection extends SPLCollection 
+class Collection extends SPLCollection
 {
+    public function __construct(array $elements = [])
+    {
+        $this->add( ...$elements );
+    }
     /**
      * Adds one or more elements to the collection
      * 
@@ -121,7 +125,8 @@ class Collection extends SPLCollection
      */
     public function merge(mixed $value) : static
     {
-        if ( !is_array($value) ) $value = [$value];
+        if ( $value instanceof static ) $value = $value->toArray();
+        elseif ( !is_array($value) ) $value = [$value];
 
         $this->exchange(
             array_merge((array) $this, $value)

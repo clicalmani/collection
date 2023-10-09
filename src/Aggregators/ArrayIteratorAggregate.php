@@ -1,9 +1,9 @@
 <?php 
 namespace Clicalmani\Collection\Aggregators;
 
-class ArrayIteratorAggregate extends CollectionAggregator implements \IteratorAggregate, \ArrayAccess
+class ArrayIteratorAggregate extends CollectionAggregator implements \ArrayAccess
 {
-    public function __construct(mixed $storage = [])
+    public function __construct(mixed $storage)
     {
         $this->storage = $storage;
         $this->length = count($storage);
@@ -17,7 +17,7 @@ class ArrayIteratorAggregate extends CollectionAggregator implements \IteratorAg
      */
     public function add(mixed $item): void
     {
-        $this->storage[] = $item;
+        $this->storage[] = $item; 
         $this->length++;
     }
 
@@ -70,10 +70,10 @@ class ArrayIteratorAggregate extends CollectionAggregator implements \IteratorAg
      * 
      * @return \Traversable
      */
-    public function getIterator(): \Traversable
-    {
-        return $this;
-    }
+    // public function getIterator(): \Traversable
+    // {
+    //     return $this;
+    // }
 
     public function item(int $index): mixed
     {

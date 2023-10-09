@@ -11,7 +11,20 @@ namespace Clicalmani\Collection;
 
 class SPLCollection extends \ArrayObject
 {
-    public function offsetSet($index, $newval) : void
+    /**
+     * Collection element type
+     * 
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * @override
+     * @param mixed $index 
+     * @param mixed $newval
+     * @return void
+     */
+    public function offsetSet(mixed $index, mixed $newval) : void
     {
         parent::offsetSet($index, $newval);
     }

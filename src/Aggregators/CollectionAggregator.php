@@ -3,7 +3,7 @@ namespace Clicalmani\Collection\Aggregators;
 
 use Clicalmani\Collection\Iterators\CollectionIteratorInterface;
 
-abstract class CollectionAggregator implements CollectionIteratorInterface
+abstract class CollectionAggregator extends \ArrayIterator
 {
     /**
      * Iterator index
