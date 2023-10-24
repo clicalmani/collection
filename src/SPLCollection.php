@@ -26,6 +26,8 @@ class SPLCollection extends \ArrayObject
      */
     public function offsetSet(mixed $index, mixed $newval) : void
     {
+        if (null === $this->type) $this->type = gettype($newval);
+        
         parent::offsetSet($index, $newval);
     }
 }

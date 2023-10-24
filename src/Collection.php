@@ -2,49 +2,58 @@
 namespace Clicalmani\Collection;
 
 /**
- * |------------------------------------------------------------------
- * |                 ***** Collection Class *****
- * |------------------------------------------------------------------
+ * Collection class
  * 
- * Collection Objects are traversable, countable and can be converted to JSON.
+ * @package clicalmani/collection 
+ * @author @clicalmani
  */
 class Collection extends SPLCollection
 {
-    public function __construct(array $elements = [])
+    public function __construct(?array $elements = [])
     {
         $this->add( ...$elements );
     }
+
     /**
-     * Adds one or more elements to the collection
+     * Store one or more elements
      * 
-     * @param mixed $elements Spread elements
+     * @param mixed $elements 
      * @return static
      */
     public function add(mixed ...$elements) : static
     {
-        foreach ($elements as $element) $this->append($element);
+        foreach ($elements as $element) $this[] = $element;
+
         return $this;
+    }
+
+    /**
+     * @override
+     */
+    public function append(mixed $value): void
+    {
+        $this->add($value);
     }
 
     /**
      * Gets element at the specified index
      * 
-     * @param mixed $index Element index (integer), null means not specified
-     * @return mixed The element at the specified index if found, otherwise 
-     *      static is returned for chaining purpose.
+     * @param mixed $index Element index
+     * @return mixed 
      */
     public function get(mixed $index = null) : mixed
     {
         if ( isset( $index ) AND isset( $this[$index] ) ) {
             return $this[$index];
         }
+        
         return $this;
     }
 
     /**
-     * Gets the first element in the collection
+     * Get the first element
      * 
-     * @return mixed first element in the collection.
+     * @return mixed
      */
     public function first() : mixed
     {
@@ -52,9 +61,9 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Gets the last element in the collection
+     * Get the last element
      * 
-     * @return mixed last element in the collection
+     * @return mixed
      */
     public function last() : mixed
     {
@@ -62,10 +71,10 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Alter each collection element value with the result of a callback function 
-     * passed as first argument.The current collection is immediately mutated.
+     * Manipulate elements through a callback function which receive element value as its first argument 
+     * and element index as its second argument.
      * 
-     * @param callable $closure Callback function passed by argument
+     * @param callable $closure
      * @return static
      */
     public function map(callable $closure) : static
@@ -78,13 +87,11 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Execute a given function on each element of the collection.
+     * Iterate through elements
      * 
-     * @param callable $closure The function to use for each element of the collection. 
-     *      it takes into account two arguments:
-     *      - the first argument is the elment value
-     *      - the second argument is the element index
-     * @return static for chaining purpose.
+     * @param callable $closure A closure function which receive element value as its first argument and 
+     * element index as its second argument.
+     * @return static
      */
     public function each(callable $closure) : static
     {
@@ -96,11 +103,11 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Creates a shallow copiy of a portion of the current collection. Filter down to the 
-     * elements that pass the test implementated by the provided callback function.
+     * Filter elements
      * 
-     * @param callable $closure Callback function
-     * @return static for chaining purpose.
+     * @param callable $closure A callback function which receive element value as its first argument and 
+     * element index as its second argument.
+     * @return static
      */
     public function filter(callable $closure) : static
     {
@@ -118,10 +125,10 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Merges the provided element(s) into the collection by appending them to the end of the collection.
+     * Merges provided elements to the existing ones.
      * 
      * @param mixed $value A single element or an array of elements
-     * @return static fro chaining purpose.
+     * @return static
      */
     public function merge(mixed $value) : static
     {
@@ -136,7 +143,7 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Verifies wether the collection is empty.
+     * Detect if there is no elements in the storage.
      * 
      * @return bool true on success, or false otherwise.
      */
@@ -157,9 +164,9 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Copies the current collection into a tmeporaly array.
+     * Do a shallow copy of the storage.
      * 
-     * @return array The result array
+     * @return array The copy
      */
     public function copy() : array
     {
@@ -167,23 +174,22 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Exchange the collection elements with specified elements in an array passed by argument
+     * Populate storage with new elements by replacing the old ones.
      * 
-     * @param array $array new collection elements array
+     * @param array $new_elements New elements to be used
      * @return static
      */
-    public function exchange(array $array) : static
+    public function exchange(array $new_elements) : static
     {
-        $this->exchangeArray($array);
+        $this->exchangeArray($new_elements);
+
         return $this;
     }
 
     /**
-     * Removes duplicate element from the collection. If two or more values are the same, the first appearance will be kept.
-     * Note this method rebuild the collection, which means items keys orders are not kept.
+     * Removes duplicated elements and maintain the indexes.
      * 
-     * @param mixed $closure [optional] an optional callback function to be executed on each element of the collection. It implements
-     *      the uniqueness of the element and return the value to be test.
+     * @param mixed $closure [optional] an optional callback function to define the uniqueness of an element.
      * @return static
      */
     public function unique(mixed $closure = null) : static
@@ -192,9 +198,11 @@ class Collection extends SPLCollection
 
         $stack  = [];
         $filter = [];
+
         foreach ($this as $key => $value)
         {
             $v = $closure($value, $key);
+
             if (!in_array($v, $filter)) {
                 $stack[] = $value;
                 $filter[] = $v;
@@ -205,32 +213,32 @@ class Collection extends SPLCollection
     }
 
     /**
-     * Sort the collection by values using a user-defined comparison function and maintain the index association.
+     * Sort down elements by mainting the associated indexes.
      * 
      * @param callable $closure a comparison function
      * @return static
      */
-    public function sort($closure)
+    public function sort(callable $closure) : static
     {
         $this->uasort($closure);
         return $this;
     }
 
     /**
-     * Joins collections element by separating them with a separator specified as first argument.
+     * Joins elements by separating them with a separator specified as first argument. Which means elements should be joinable.
      * 
      * @param string $delimiter Separator
      * @return string
      */
-    public function join(string $delimiter) : string
+    public function join(string $delimiter = ',') : string
     {
         return join($delimiter, $this->toArray());
     }
     
     /**
-     * Returns the array representation of the collection.
+     * Returns the array representation of the stored elements.
      * 
-     * @return array the result array
+     * @return array 
      */
     public function toArray() : array
     {
@@ -246,5 +254,25 @@ class Collection extends SPLCollection
     {
         $this->setFlags(parent::ARRAY_AS_PROPS);
         return $this;
+    }
+
+    /**
+     * Create a new set
+     * 
+     * @return \Clicalmani\Collection\Set
+     */
+    public function asSet() : Set
+    {
+        return new Set;
+    }
+
+    /**
+     * Create a new map
+     * 
+     * @return \Clicalmani\Collection\Map
+     */
+    public function asMap() : Map
+    {
+        return new Map;
     }
 }
