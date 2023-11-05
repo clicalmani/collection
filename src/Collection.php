@@ -43,11 +43,7 @@ class Collection extends SPLCollection
      */
     public function get(mixed $index = null) : mixed
     {
-        if ( isset( $index ) AND isset( $this[$index] ) ) {
-            return $this[$index];
-        }
-        
-        return $this;
+        return @ $this[$index];
     }
 
     /**
