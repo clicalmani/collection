@@ -2,7 +2,7 @@
 namespace Clicalmani\Collection;
 
 /**
- * Collection class
+ * Class Collection
  * 
  * @package clicalmani/collection 
  * @author @clicalmani

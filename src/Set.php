@@ -4,14 +4,18 @@ namespace Clicalmani\Collection;
 class Set extends Collection
 {
     /**
+     * (non-PHPdoc)
      * @override
+     * 
+     * @param mixed ...$items
+     * @return static
      */
-    public function add(mixed ...$elements) : static
+    public function add(mixed ...$items) : static
     {
-        foreach ($elements as $element) {
-            if (null !== $this->type && gettype($element) !== $this->type) continue;
+        foreach ($items as $item) {
+            if (null !== $this->type && gettype($item) !== $this->type) continue;
                     
-            $this[] = $element;
+            $this[] = $item;
         }
 
         return $this->unique();

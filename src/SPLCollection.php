@@ -7,8 +7,10 @@ namespace Clicalmani\Collection;
  * |--------------------------------------------------------------
  * 
  * Collection concept is based on SPL Class ArrayObject
+ * 
+ * @package Clicalmani\Collection
+ * @author @clicalmani
  */
-
 class SPLCollection extends \ArrayObject
 {
     /**
