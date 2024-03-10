@@ -47,6 +47,22 @@ class Collection extends SPLCollection
     }
 
     /**
+     * Find element index
+     * 
+     * @param mixed $value
+     * @return int
+     */
+    public function index(mixed $value) : int
+    {
+        foreach ($this as $k => $v) {
+            if (is_callable($value) && false != $value($v, $k)) return $k;
+            elseif ($value === $v) return $k;
+        }
+
+        return -1;
+    }
+
+    /**
      * Get the first element
      * 
      * @return mixed
@@ -206,6 +222,21 @@ class Collection extends SPLCollection
         }
 
         return $this->exchange($stack);
+    }
+
+    /**
+     * Find element
+     * 
+     * @param callable $callback
+     * @return mixed
+     */
+    public function find(callable $callback) : mixed
+    {
+        foreach ($this as $key => $value) {
+            if (false != $callback($value, $key)) return $value;
+        }
+
+        return null;
     }
 
     /**
